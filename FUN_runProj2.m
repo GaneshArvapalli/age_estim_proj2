@@ -59,8 +59,8 @@ for label=1:6
     end
     boundBox(label, :) = [r,c,s,h,w,t];
 end
-boundBox = reshape(boundBox, 1,36);
-% PCA STEP GOES HERE
-age = predict(Mdl,boundBox);
-disp(num2str(age));
+input = reshape(boundBox, 1,36);
+input = principal_comp(input, 10);
+age = predict(Mdl,input);
+% disp(num2str(age));
 end

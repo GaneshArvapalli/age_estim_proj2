@@ -5,16 +5,16 @@ function Mdl=linear_trainer()
     if ~exist('training_data.mat')
         load('training_images.mat');
         trainX = [];
-        for i=1:length(imgs)
-            vec_s = zeros(6, 6);
+        for i=1:length(train_imgs)
+            vec_s = zeros(1, 36);
             for label=1:6
-                [r,c,s,h,w,t] = FUN_BoundingBox(imgs{i}==label);
-                vec_s(label, :) = [r,c,s,h,w,t];
+                [r,c,s,h,w,t] = FUN_BoundingBox(train_imgs{i}==label);
+                vec_s(label:label+5) = [r,c,s,h,w,t];
             end
             trainX = [trainX; vec_s];
         end
-        trainX = reshape(trainX,[36,length(imgs)]);
-        trainX = trainX';
+        % trainX = reshape(trainX,[36,length(imgs)]);
+        % trainX = trainX';
         %%%% CHECK THIS RESHAPE PROBABLY WRONG
         save('training_data.mat','trainX');
     else
@@ -30,6 +30,8 @@ function Mdl=linear_trainer()
 %     Mdl = fitclinear(trainX(:,idxTrain),Y(idxTrain),'ObservationsIn','columns');
     %[Mdl, FitInfo] = fitrlinear(trainX, Y);
     %disp(FitInfo);
+    % PCA STEP (M=10 arbitrarily chosen for now, will be optimized later)
+    trainX = principal_comp(trainX, 10);
     Mdl = fitlm(trainX, Y);
     save('linear_predictor.mat','Mdl');
 end
