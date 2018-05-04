@@ -2,17 +2,21 @@
 clc;
 clearvars;
 
+function full_mask=segment_MRI(a)
 
-% nii = load_nii('Project2_TrainingData/NIFTI_20130306/1000_MNI_label_convert.nii', [], 1);
-filename = fullfile('Project2_TrainingData', 'manual_label', '1000_MNI_label_convert.nii');
-Img = load_nii(filename);
-filename = fullfile('Project2_TrainingData','scans','1000_ANAT_N4_MNI_BRAIN_HISTMATCH.nii.gz');
-original = load_nii(filename);
-slicenum = uint8(286/3);
-temp = double(Img.img(:,:,slicenum));
-% imshow(double(Img.img(:,:,slicenum)));
-ding = labeloverlay(uint8(Img.img(:,:,slicenum)),uint8(original.img(:,:,slicenum)));
-imshowpair(ding, double(original.img(:,:,slicenum)), 'montage');
+
+end
+
+% % nii = load_nii('Project2_TrainingData/NIFTI_20130306/1000_MNI_label_convert.nii', [], 1);
+% filename = fullfile('Project2_TrainingData', 'manual_label', '1000_MNI_label_convert.nii');
+% Img = load_nii(filename);
+% filename = fullfile('Project2_TrainingData','scans','1000_ANAT_N4_MNI_BRAIN_HISTMATCH.nii.gz');
+% original = load_nii(filename);
+% slicenum = uint8(286/3);
+% temp = double(Img.img(:,:,slicenum));
+% % imshow(double(Img.img(:,:,slicenum)));
+% ding = labeloverlay(uint8(Img.img(:,:,slicenum)),uint8(original.img(:,:,slicenum)));
+% imshowpair(ding, double(original.img(:,:,slicenum)), 'montage');
 
 % classNames = ['Left Caudate', 'Right Caudate', 'Left Putamen', 'Right Putamen',...
 %     'Left Thalamus', 'Right Thalamus'];
@@ -25,8 +29,4 @@ imshowpair(ding, double(original.img(:,:,slicenum)), 'montage');
 % imds = imageDatastore('training_images.mat','FileExtensions','.mat','ReadFcn',@matReader);
 
 %%
-function full_mask=segment_MRI(a)
-
-
-end
 

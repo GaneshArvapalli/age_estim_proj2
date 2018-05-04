@@ -24,10 +24,12 @@ function Mdl=linear_trainer()
     Y = xlsread('Project2_TrainingData/SubjectList_training.xls');
     Y = Y(:,2);
 %     rng(1); % For reproducibility
-%     cvp = cvpartition(n,'Holdout',double(3.0/size(trainX, 1)));
+%     cvp = cvpartition(n,'Holdout',2);
 %     idxTrain = training(cvp); % Extract training set indices
 %     trainX = trainX';
 %     Mdl = fitclinear(trainX(:,idxTrain),Y(idxTrain),'ObservationsIn','columns');
-    [Mdl, FitInfo] = fitrlinear(trainX, Y);
-    disp(FitInfo);
+    %[Mdl, FitInfo] = fitrlinear(trainX, Y);
+    %disp(FitInfo);
+    Mdl = fitlm(trainX, Y);
+    save('linear_predictor.mat','Mdl');
 end

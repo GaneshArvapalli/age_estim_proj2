@@ -19,16 +19,17 @@ function labeled_image = region_grow(matrix, pos, label_num)
                     check_y = current_pos(2)+j;
                     check_z = current_pos(3)+k;
                     % Don't check the same pixel again
-                    if i~=0 && j ~=0 && k~=0
+                    if i~=0 || j ~=0 || k~=0
                         % Check if inside boundaries
                         if (check_x < x_max) && (check_y < y_max) && ...
-                                (check_z < z_max) && (check_x > 0) && ...
-                                (check_y > 0) && (check_z > 0)
+                           (check_z < z_max) && (check_x > 0) && ...
+                           (check_y > 0) && (check_z > 0)
+                                % If not already checked
                                 if labeled_image(check_x, check_y, check_z) == 0
                                     value = matrix(check_x, check_y, check_z);
                                     % If appropriate intensity difference
                                     % and close by to initial point
-                                    if abs(value - seed) <= 2 && norm(double(current_pos - pos)) < 20
+                                    if abs(value - seed) <= 10 && norm(double(current_pos - pos)) < 20
                                         labeled_image(check_x, check_y, check_z) = label_num;
                                         q(end+1,:) = [ check_x, check_y, check_z];
                                     end

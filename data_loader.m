@@ -1,6 +1,8 @@
 %% Ganesh Arvapalli
 % Data loader for saving images for training or testing
 
+% Point it to the right folder and type 'train' or 'test' for t
+% Outputs '.mat' file with all images used for training/testing
 function data = data_loader(filepath, t)
     % Store training data for easy access
     if contains(t, 'train')
