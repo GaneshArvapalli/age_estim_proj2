@@ -17,6 +17,9 @@ function full_mask=segment_MRI(a)
     % Register every slice of current MRI scan to training image
     [optimizer, metric] = imregconfig('multimodal');
     movingReg = imregister(a,training_image,'affine',optimizer,metric);
+    
+    % AFFINE REGISTRATION SEEMS INCORRECT
+    
     disp('Completed registration');
     % [~,movingReg] = imregdemons(a,training_image);
     

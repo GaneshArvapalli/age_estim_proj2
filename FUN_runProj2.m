@@ -26,13 +26,41 @@ function [maskImg,boundBox,age] = FUN_runProj2(scanImg,trained_model)
 % MAKE UP SOME STUPID RESULTS TO MAKE THE CODE RUNNABLE. YOU SHOULD REPLACE
 % THIS WITH YOUR BELOVED SEGMENTATION ALGORITHM :)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-maskImg = trained_model; %(E)
-boundBox = zeros(6,6);   %(E)
-for i = 1:6              %(E)
-    labelImg = maskImg == i; %(E)
-    [cen_row,cen_col,cen_slic,h,w,t] = FUN_BoundingBox(labelImg); %(E)
-    boundBox(i,:) = [cen_row,cen_col,cen_slic,h,w,t];             %(E)
-end                      %(E)
-age = floor(100 * rand); %(E)
+% maskImg = trained_model; %(E)
+% boundBox = zeros(6,6);   %(E)
+% for i = 1:6              %(E)
+%     labelImg = maskImg == i; %(E)
+%     [cen_row,cen_col,cen_slic,h,w,t] = FUN_BoundingBox(labelImg); %(E)
+%     boundBox(i,:) = [cen_row,cen_col,cen_slic,h,w,t];             %(E)
+% end                      %(E)
+% age = floor(100 * rand); %(E)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+if ~exist('maskImg')
+    if exist('test_mask.mat')
+        load('test_mask.mat');
+    else
+        maskImg = segment_MRI(scanImg);
+        save('test_mask.mat', 'maskImg');
+    end
+end
+
+load('linear_predictor.mat');
+boundBox = zeros(6, 6);
+for label=1:6
+    [r,c,s,h,w,t] = FUN_BoundingBox(maskImg==label);
+    if isempty(r)
+        r = 0;
+        c = 0;
+        s = 0;
+        h = 0;
+        w = 0;
+        t = 0;
+    end
+    boundBox(label, :) = [r,c,s,h,w,t];
+end
+boundBox = reshape(boundBox, 1,36);
+% PCA STEP GOES HERE
+age = predict(Mdl,boundBox);
+disp(num2str(age));
 end
