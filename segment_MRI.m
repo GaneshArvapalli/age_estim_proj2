@@ -15,6 +15,8 @@ function full_mask=segment_MRI(a)
     seeds = uint8(seeds);
     disp('Found seeds');
     % Register every slice of current MRI scan to training image
+    
+    % TRY DONWSAMPLING A
     [optimizer, metric] = imregconfig('multimodal');
     movingReg = imregister(a,training_image,'affine',optimizer,metric);
     
@@ -22,6 +24,10 @@ function full_mask=segment_MRI(a)
     
     disp('Completed registration');
     % [~,movingReg] = imregdemons(a,training_image);
+    
+    % TRY COMPARING CONTRAST BETWEEN REGION AROUND PIXEL AND CURRENT PIXEL
+    % CHECK WHETHER PIXEL IS HIGHER THAN BACKGROUND (Use image gradient?)
+    
     
     %tform = imregcorr(a, training_image);
     %Rfixed = imref3d(size(training_image));
