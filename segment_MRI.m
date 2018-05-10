@@ -22,7 +22,7 @@ function full_mask=segment_MRI(a)
     
      % determine proper format, one image at a time?
     mriVolumeOriginal = squeeze(a.D);
-    sizeO = size(mriVolumeOriginal);  
+    sizeO = size(mriVolumeOriginal);
 
     mriVolumeResized = imresize3(mriVolumeOriginal, 0.5);
     sizeR = size(mriVolumeResized);

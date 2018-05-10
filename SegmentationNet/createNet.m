@@ -1,22 +1,13 @@
 function net=createNet()
-        inputSize = [241 286 241];
-        
-        numFilters = 64;
-        filterSize = 3;
-        numClasses = 6;
-        net = [
-                imageInputLayer(inputSize)
-                convolution2dLayer(filterSize,numFilters,'Padding',1)
-                reluLayer()
-                maxPooling2dLayer(2,'Stride',2)
-                convolution2dLayer(filterSize,numFilters,'Padding',1)
-                reluLayer()
-                transposedConv2dLayer(4,numFilters,'Stride',2,'Cropping',1);
-                convolution2dLayer(1,numClasses);
-                softmaxLayer()
-                pixelClassificationLayer()
-              ];
+          image_size = [241 286];
+          numClasses = 6;
+          net = fcnLayers(image_size, numClasses);
+          % plot(net);
 
+
+%         inputSize = [32 32 1];
+%         imgLayer = imageInputLayer(inputSize);
+% 
 %         filterSize = 3;
 %         numFilters = 32;
 %         conv = convolution2dLayer(filterSize,numFilters,'Padding',1);
@@ -33,6 +24,7 @@ function net=createNet()
 %         maxPoolDownsample2x
 %         ];
 %         
+%         % Upsampling layer
 %         filterSize = 4;
 %         transposedConvUpsample2x = transposedConv2dLayer(4,numFilters,'Stride',2,'Cropping',1);
 %         
@@ -43,6 +35,7 @@ function net=createNet()
 %         relu
 %         ];
 %     
+%         % Pixel classification layer
 %         numClasses = 6;
 %         conv1x1 = convolution2dLayer(1,numClasses);
 %         
@@ -52,11 +45,28 @@ function net=createNet()
 %         pixelClassificationLayer()
 %         ];
 %         
-%         imgLayer = imageInputLayer(inputSize);
+%         % Full net
 %         net = [
 %             imgLayer    
 %             downsamplingLayers
 %             upsamplingLayers
 %             finalLayers
 %             ];
+%         
+                
+%         numFilters = 64;
+%         filterSize = 3;
+%         numClasses = 6;
+%         net = [
+%                 imageInputLayer(inputSize)
+%                 convolution2dLayer(filterSize,numFilters,'Padding',1)
+%                 reluLayer()
+%                 maxPooling2dLayer(2,'Stride',2)
+%                 convolution2dLayer(filterSize,numFilters,'Padding',1)
+%                 reluLayer()
+%                 transposedConv2dLayer(4,numFilters,'Stride',2,'Cropping',1);
+%                 convolution2dLayer(1,numClasses);
+%                 softmaxLayer()
+%                 pixelClassificationLayer()
+%               ];
 end

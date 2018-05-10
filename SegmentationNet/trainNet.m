@@ -50,7 +50,7 @@ function model=trainNet(net)
     sizeX = size(X);
     % X = reshape(X, sizeX(1), sizeX(2), 1, sizeX(3));
     % Y = reshape(Y, sizeX(1), sizeX(2), 1, sizeX(3));
-    options = trainingOptions('sgdm','InitialLearnRate',0.001, 'Verbose',false,'Plots','training-progress');
-    trained_net = trainNetwork(X, Y, net, options);
+    options = trainingOptions('sgdm','InitialLearnRate',0.01, 'Verbose',false,'Plots','training-progress');
+    trained_net = trainNetwork(X, categorical(Y), net, options);
     save('neural_net.mat', 'trained_net');
 end
