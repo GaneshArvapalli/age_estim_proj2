@@ -7,19 +7,19 @@ function labeled_image = region_grow(matrix, pos, label_num)
     y_max = size(matrix, 2);
     z_max = size(matrix, 3);
     % Start with initial position and seed
-    seed = matrix(pos(1),pos(2),pos(3));
+    seed = double(matrix(pos(1),pos(2),pos(3)));
     q = [pos(1),pos(2),pos(3)];
     while ~isempty(q)
         current_pos = [q(1,1),q(1,2),q(1,3)];
         q(1,:) = [];
-        for i=-1:1
-            for j=-1:1
-                for k=-1:1
-                    check_x = current_pos(1)+i;
-                    check_y = current_pos(2)+j;
-                    check_z = current_pos(3)+k;
+        for i = -1:1
+            for j = -1:1
+                for k = -1:1
                     % Don't check the same pixel again
-                    if i~=0 || j ~=0 || k~=0
+                    if i~=0 && j ~=0 && k~=0
+                        check_x = current_pos(1) + i;
+                        check_y = current_pos(2) + j;
+                        check_z = current_pos(3) + k;
                         % Check if inside boundaries
                         if (check_x < x_max) && (check_y < y_max) && ...
                            (check_z < z_max) && (check_x > 0) && ...
@@ -29,9 +29,9 @@ function labeled_image = region_grow(matrix, pos, label_num)
                                     value = matrix(check_x, check_y, check_z);
                                     % If appropriate intensity difference
                                     % and close by to initial point
-                                    if abs(value - seed)/norm(seed) <= 0.05 && norm(double(current_pos - pos)) < 20
+                                    if abs(value - seed)/norm(seed) <= 0.5 && norm(double(current_pos - pos)) < 20
                                         labeled_image(check_x, check_y, check_z) = label_num;
-                                        q(end+1,:) = [ check_x, check_y, check_z];
+                                        q(end+1,:) = [check_x, check_y, check_z];
                                     end
                                 end
                         end

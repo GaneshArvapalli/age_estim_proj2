@@ -36,16 +36,15 @@ function [maskImg,boundBox,age] = FUN_runProj2(scanImg,trained_model)
 % age = floor(100 * rand); %(E)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if ~exist('maskImg')
-    if exist('test_mask.mat')
-        load('test_mask.mat');
-    else
-        maskImg = segment_MRI(scanImg);
-        save('test_mask.mat', 'maskImg');
-    end
+if ~exist('trained_model')
+    load('linear_predictor.mat');
 end
 
-load('linear_predictor.mat');
+maskImg = segment_MRI(scanImg);
+maskImg = uint8(imresize3(maskImg, 2));
+
+save('maskImg.mat','maskImg');
+
 boundBox = zeros(6, 6);
 for label=1:6
     [r,c,s,h,w,t] = FUN_BoundingBox(maskImg==label);
@@ -60,7 +59,7 @@ for label=1:6
     boundBox(label, :) = [r,c,s,h,w,t];
 end
 input = reshape(boundBox, 1,36);
-input = principal_comp(input, 10);
-age = predict(Mdl,input);
-% disp(num2str(age));
+input_pca = principal_comp(input, 10);
+age = predict(trained_model, input_pca);
+disp(num2str(age));
 end

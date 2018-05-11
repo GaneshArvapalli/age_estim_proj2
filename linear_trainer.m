@@ -32,6 +32,6 @@ function Mdl=linear_trainer()
     %disp(FitInfo);
     % PCA STEP (M=10 arbitrarily chosen for now, will be optimized later)
     trainX = principal_comp(trainX, 10);
-    Mdl = fitlm(trainX, Y);
-    save('linear_predictor.mat','Mdl');
+    trained_model = fitlm(trainX, Y);
+    save('linear_predictor.mat','trained_model');
 end
