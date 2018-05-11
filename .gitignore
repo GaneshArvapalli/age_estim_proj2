@@ -5,3 +5,4 @@ Project2_TrainingData/*
 *.mat
 *.asv
 SegmentationNet/NIFTI*
+*.zip
