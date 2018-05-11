@@ -9,7 +9,8 @@ function data = data_loader(filepath, t)
         Files=dir(filepath);
         training_labeled_imgs = {};
         % for k=1:length(Files)
-        for k=1:7
+        % for k=1:7
+        for k=1:12
             if contains(Files(k).name, '.nii')
                 Image = load_nii(Files(k).name);
                 training_labeled_imgs{end+1} = Image.img;
@@ -19,8 +20,8 @@ function data = data_loader(filepath, t)
     elseif contains(t, 'label_test')
         Files=dir(filepath);
         testing_labeled_imgs = {};
-        % for k=1:length(Files)
-        for k=1:15
+        for k=1:length(Files)
+        % for k=1:15
             if contains(Files(k).name, '.nii') && k >= 8
                 Image = load_nii(Files(k).name);
                 testing_labeled_imgs{end+1} = Image.img;
@@ -30,8 +31,9 @@ function data = data_loader(filepath, t)
     elseif contains(t, 'train')
         Files=dir(filepath);
         train_imgs = {};
-        %for k=1:length(Files)
-        for k=1:7
+        for k=1:12
+        % for k=1:length(Files)
+        % for k=1:7
             if contains(Files(k).name, '.nii')
                 Image = load_nii(Files(k).name);
                 train_imgs{end+1} = Image.img;
@@ -43,8 +45,8 @@ function data = data_loader(filepath, t)
     elseif contains(t, 'test')
         Files=dir(filepath);
         test_imgs = {};
-        % for k=1:length(Files)
-        for k=1:15
+        for k=1:length(Files)
+        % for k=1:15
             if contains(Files(k).name, '.nii') && k >= 8
                 Image = load_nii(Files(k).name);
                 test_imgs{end+1} = Image.img;

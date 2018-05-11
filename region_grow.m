@@ -29,7 +29,7 @@ function labeled_image = region_grow(matrix, pos, label_num)
                                     value = matrix(check_x, check_y, check_z);
                                     % If appropriate intensity difference
                                     % and close by to initial point
-                                    if abs(value - seed)/norm(seed) <= 0.5 && norm(double(current_pos - pos)) < 20
+                                    if abs(value - seed)/norm(seed) <= 0.01 && norm(double(current_pos - pos)) < 10
                                         labeled_image(check_x, check_y, check_z) = label_num;
                                         q(end+1,:) = [check_x, check_y, check_z];
                                     end
