@@ -24,16 +24,17 @@ function labeled_image = region_grow(matrix, pos, label_num)
                         if (check_x < x_max) && (check_y < y_max) && ...
                            (check_z < z_max) && (check_x > 0) && ...
                            (check_y > 0) && (check_z > 0)
-                                % If not already checked
-                                if labeled_image(check_x, check_y, check_z) == 0
-                                    value = matrix(check_x, check_y, check_z);
-                                    % If appropriate intensity difference
-                                    % and close by to initial point
-                                    if abs(value - seed)/norm(seed) <= 0.01 && norm(double(current_pos - pos)) < 10
-                                        labeled_image(check_x, check_y, check_z) = label_num;
-                                        q(end+1,:) = [check_x, check_y, check_z];
-                                    end
+                            % If not already checked
+                            if labeled_image(check_x, check_y, check_z) == 0
+                                value = matrix(check_x, check_y, check_z);
+                                % If appropriate intensity difference
+                                % and close by to initial point
+                                if norm(abs(value - seed))/norm(seed) <= 0.03 && ...
+                                        norm(double(current_pos - pos)) < 15
+                                    labeled_image(check_x, check_y, check_z) = label_num;
+                                    q(end+1,:) = [check_x, check_y, check_z];
                                 end
+                            end
                         end
                     end
                 end
