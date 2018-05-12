@@ -16,7 +16,7 @@ subjName = scanList(:,1);      % 1st column: name
 subjNum = length(subjName);    % # of subjects for testing
 labelNum = 6;                  % 6 subcortical structures
 
-model = linear_trainer();   %(E)
+[model,avLabel,avImage] = linear_trainer();   %(E)
 % If you have a pretrained model that can be used for testing, you can load
 % your model here. If not, you can simply delete this line.
 
@@ -27,12 +27,12 @@ runTime = zeros(subjNum,1);    % run time
 
 
 % Testing: segmentation, bounding boxes, and age.
-for subjID = 1:subjNum         
+for subjID = 1:subjNum
     scanStruc = load_untouch_nii([scanDir,num2str(subjName(subjID)),'_ANAT_N4_MNI_BRAIN_HISTMATCH.nii.gz']);
     scanImg = scanStruc.img;   % This is the MR scan
     
     tic                        
-    [maskImg_temp,boundBox_temp,age_temp] = FUN_runProj2(scanImg,model); %(E)
+    [maskImg_temp,boundBox_temp,age_temp] = FUN_runProj2(scanImg,model, avLabel, avImage); %(E)
     % If your algorithm doesn't need pretrained models, you can remove the
     % "trained_model" here. On the other hand, if your algorithm needs
     % multiple inputs, you can add more inputs. 

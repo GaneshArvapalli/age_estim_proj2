@@ -1,7 +1,29 @@
 %% Ganesh Arvapalli
 % Basic linear classifier training
 
-function trained_model=linear_trainer()
+function [trained_model, avLabel, avImage]=linear_trainer()
+    % First find average locations of existing brain labels/parts
+    data_loader('Project2_TrainingData\manual_label', 'label_train');
+    data_loader('Project2_TrainingData\scans', 'train');
+    if ~exist('training_labeled_imgs')
+        load('labeled_images_training.mat');
+    end
+    if ~exist('train_imgs')
+        load('training_images.mat');
+    end
+    avLabel = uint8(zeros(size(training_labeled_imgs{1})));
+    for i=1:length(training_labeled_imgs)
+        avLabel = avLabel + uint8(training_labeled_imgs{i});
+    end
+    avLabel = avLabel/length(training_labeled_imgs);
+    avImage = single(zeros(size(train_imgs{1})));
+    for i=1:length(train_imgs)
+        avImage = avImage + single(train_imgs{i});
+    end
+    avImage = avImage/length(train_imgs);
+    % disp(size(av));
+    % labeled_image = training_labeled_imgs{1};
+    % labeled_image = avLabel;
     if ~exist('training_labeled_imgs')
         load('labeled_images_training.mat');
         trainX = [];
@@ -21,7 +43,7 @@ function trained_model=linear_trainer()
     end
 %     n = size(trainX,1)/6;
     Y = xlsread('Project2_TrainingData/SubjectList_training.xls');
-    Y = Y(:,2);
+    Y = abs(Y(:,2));
     Y = Y(1:length(training_labeled_imgs));
     % rng(1); % For reproducibility
     % cvp = cvpartition(n,'Holdout',2);

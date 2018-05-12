@@ -1,29 +1,28 @@
 %% Ganesh Arvapalli
 % Basic method to segment MRI image using region growing
 
-function full_mask=segment_MRI(inputImage)
+function full_mask=segment_MRI(inputImage, avLabel, avImage)
     % First find average locations of existing brain labels/parts
-    if ~exist('training_labeled_imgs')
-        load('labeled_images_training.mat');
-    end
-    if ~exist('train_imgs')
-        load('training_images.mat');
-    end
-    avLabel = uint8(zeros(size(training_labeled_imgs{1})));
-    for i=1:length(training_labeled_imgs)
-        avLabel = avLabel + uint8(training_labeled_imgs{i});
-    end
-    avLabel = avLabel/length(training_labeled_imgs);
-    % disp(size(av));
-    % labeled_image = training_labeled_imgs{1};
-    % labeled_image = avLabel;
-    
-        
-    avImage = single(zeros(size(train_imgs{1})));
-    for i=1:length(train_imgs)
-        avImage = avImage + single(train_imgs{i});
-    end
-    avImage = avImage/length(train_imgs);
+%     if ~exist('training_labeled_imgs')
+%         load('labeled_images_training.mat');
+%     end
+%     if ~exist('train_imgs')
+%         load('training_images.mat');
+%     end
+%     avLabel = uint8(zeros(size(training_labeled_imgs{1})));
+%     for i=1:length(training_labeled_imgs)
+%         avLabel = avLabel + uint8(training_labeled_imgs{i});
+%     end
+%     avLabel = avLabel/length(training_labeled_imgs);
+%     % disp(size(av));
+%     % labeled_image = training_labeled_imgs{1};
+%     % labeled_image = avLabel;
+%     
+%     avImage = single(zeros(size(train_imgs{1})));
+%     for i=1:length(train_imgs)
+%         avImage = avImage + single(train_imgs{i});
+%     end
+%     avImage = avImage/length(train_imgs);
     
     
     labeled_image = uint8(avLabel);
@@ -38,7 +37,7 @@ function full_mask=segment_MRI(inputImage)
         seeds(label, :) = S.Centroid;
     end
     seeds = uint8(seeds);
-    disp('Found seeds');
+    % disp('Found seeds');
     % Register every slice of current MRI scan to training image
     
     % TRY DONWSAMPLING A
@@ -58,7 +57,7 @@ function full_mask=segment_MRI(inputImage)
     
     % AFFINE REGISTRATION SEEMS INCORRECT
     
-    disp('Completed registration');
+    % disp('Completed registration');
     % [~,movingReg] = imregdemons(a,training_image);
     
     % TRY COMPARING CONTRAST BETWEEN REGION AROUND PIXEL AND CURRENT PIXEL
@@ -73,10 +72,10 @@ function full_mask=segment_MRI(inputImage)
         %end
     % Conduct region growing using the previously found centroids
     full_mask = zeros(size(movingReg));
-    disp('Starting labeling');
+    % disp('Starting labeling');
     for l=1:6
         full_mask = full_mask + region_grow(movingReg, seeds(l,:), l);
-        disp(['Completed labeling for ', num2str(l)]);
+        % disp(['Completed labeling for ', num2str(l)]);
     end
     % Output labeled image
 end

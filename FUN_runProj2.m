@@ -1,6 +1,6 @@
 % runProj2 version 1.0
 % 03-31-2018
-function [maskImg,boundBox,age] = FUN_runProj2(scanImg,trained_model)
+function [maskImg,boundBox,age] = FUN_runProj2(scanImg,trained_model, avLabel, avImage)
 % Inputs:  scanImg       - 3D MR image of testing subject 
 %          trained_model - pretrained model for testing  %(E)
 %                          If you don't need a trained model, you can
@@ -35,16 +35,16 @@ function [maskImg,boundBox,age] = FUN_runProj2(scanImg,trained_model)
 % end                      %(E)
 % age = floor(100 * rand); %(E)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if ~exist('trained_model')
-    data_loader('Project2_TrainingData\manual_label', 'label_train');
-    data_loader('Project2_TrainingData\scans', 'train');
-    linear_trainer;
-    load('linear_predictor.mat');
-end
+% if ~exist('trained_model')
+%     data_loader('Project2_TrainingData\manual_label', 'label_train');
+%     data_loader('Project2_TrainingData\scans', 'train');
+%     linear_trainer;
+%     load('linear_predictor.mat');
+% end
 
-maskImg = segment_MRI(scanImg);
+maskImg = segment_MRI(scanImg, avLabel, avImage);
 maskImg = uint8(imresize3(maskImg, 2));
-
+maskImg = maskImg(2:end, :, 2:end);
 % save('maskImg.mat','maskImg');
 
 boundBox = zeros(6, 6);
@@ -63,6 +63,6 @@ end
 input = reshape(boundBox, 1,36);
 % input_pca = principal_comp(input, 20);
 % age = predict(trained_model, input_pca);
-age = predict(trained_model, input);
-disp(num2str(age));
+age = abs(predict(trained_model, input));
+% disp(num2str(age));
 end
