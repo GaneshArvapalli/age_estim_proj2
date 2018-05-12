@@ -2,11 +2,23 @@
 
 function [newdata, v]=principal_comp(data, M)
 
-d = data - mean(data, 2);
-[U,S,v] = svd(d);
-v = transpose(v);
-v = v(:,1:M);
-newdata = data*v;
+% d = data - mean(data, 2);
+% [U,S,v] = svd(d);
+% v = transpose(v);
+% v = v(:,1:M);
+% newdata = data*v;
+
+
+[coeff, score, latent, tsquared, explained, mu] = pca(data);
+if M < size(score, 2)
+    reconstructed = score(:,M) * coeff(:,M)' + mu;
+    newdata = reconstructed;
+else
+    reconstructed = score * coeff' + mu;
+    newdata = reconstructed;
+end
+% coeffs = pca(data);
+% newdata = (data-mean(data))*coeffs;
 
 % m = mean(data, 2);
 % d = data - repmat(m,1,size(data,2));

@@ -1,7 +1,7 @@
 %% Ganesh Arvapalli
 % Basic linear classifier training
 
-function Mdl=linear_trainer()
+function trained_model=linear_trainer()
     if ~exist('training_labeled_imgs')
         load('labeled_images_training.mat');
         trainX = [];
@@ -19,19 +19,19 @@ function Mdl=linear_trainer()
     else
         load('training_data.mat');
     end
-    n = size(trainX,1)/6;
+%     n = size(trainX,1)/6;
     Y = xlsread('Project2_TrainingData/SubjectList_training.xls');
     Y = Y(:,2);
     Y = Y(1:length(training_labeled_imgs));
-%     rng(1); % For reproducibility
-%     cvp = cvpartition(n,'Holdout',2);
-%     idxTrain = training(cvp); % Extract training set indices
-%     trainX = trainX';
-%     Mdl = fitclinear(trainX(:,idxTrain),Y(idxTrain),'ObservationsIn','columns');
-    %[Mdl, FitInfo] = fitrlinear(trainX, Y);
-    %disp(FitInfo);
+    % rng(1); % For reproducibility
+    % cvp = cvpartition(n,'Holdout',2);
+    % idxTrain = training(cvp); % Extract training set indices
+    % trainX = trainX';
+    % Mdl = fitclinear(trainX(:,idxTrain),Y(idxTrain),'ObservationsIn','columns');
+    % [Mdl, FitInfo] = fitrlinear(trainX, Y);
+    % disp(FitInfo);
     % PCA STEP (M=10 arbitrarily chosen for now, will be optimized later)
-    trainX = principal_comp(trainX, 20);
+    trainX = principal_comp(trainX, 3);
     trained_model = fitlm(trainX, Y);
     save('linear_predictor.mat','trained_model');
 end

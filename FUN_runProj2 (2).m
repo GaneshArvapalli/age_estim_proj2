@@ -26,43 +26,13 @@ function [maskImg,boundBox,age] = FUN_runProj2(scanImg,trained_model)
 % MAKE UP SOME STUPID RESULTS TO MAKE THE CODE RUNNABLE. YOU SHOULD REPLACE
 % THIS WITH YOUR BELOVED SEGMENTATION ALGORITHM :)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% maskImg = trained_model; %(E)
-% boundBox = zeros(6,6);   %(E)
-% for i = 1:6              %(E)
-%     labelImg = maskImg == i; %(E)
-%     [cen_row,cen_col,cen_slic,h,w,t] = FUN_BoundingBox(labelImg); %(E)
-%     boundBox(i,:) = [cen_row,cen_col,cen_slic,h,w,t];             %(E)
-% end                      %(E)
-% age = floor(100 * rand); %(E)
+maskImg = trained_model; %(E)
+boundBox = zeros(6,6);   %(E)
+for i = 1:6              %(E)
+    labelImg = maskImg == i; %(E)
+    [cen_row,cen_col,cen_slic,h,w,t] = FUN_BoundingBox(labelImg); %(E)
+    boundBox(i,:) = [cen_row,cen_col,cen_slic,h,w,t];             %(E)
+end                      %(E)
+age = floor(100 * rand); %(E)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if ~exist('trained_model')
-    data_loader('Project2_TrainingData\manual_label', 'label_train');
-    data_loader('Project2_TrainingData\scans', 'train');
-    linear_trainer;
-    load('linear_predictor.mat');
-end
-
-maskImg = segment_MRI(scanImg);
-maskImg = uint8(imresize3(maskImg, 2));
-
-% save('maskImg.mat','maskImg');
-
-boundBox = zeros(6, 6);
-for label=1:6
-    [r,c,s,h,w,t] = FUN_BoundingBox(maskImg==label);
-    if isempty(r)
-        r = 0;
-        c = 0;
-        s = 0;
-        h = 0;
-        w = 0;
-        t = 0;
-    end
-    boundBox(label, :) = [r,c,s,h,w,t];
-end
-input = reshape(boundBox, 1,36);
-% input_pca = principal_comp(input, 20);
-% age = predict(trained_model, input_pca);
-age = predict(trained_model, input);
-disp(num2str(age));
 end
